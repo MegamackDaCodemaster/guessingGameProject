@@ -5,5 +5,6 @@ public class GuessingGame {
 		int from = 0;
 		int to = 1000;
 		Guesser guesser = new Guesser(from, to);
+		guesser.start();
 	}
 }
