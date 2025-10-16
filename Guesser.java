@@ -58,15 +58,34 @@ public class Guesser{
    * a valid reply. Return the String that you read from
    * the player.
    */
-  private String getReply(){
-    String reply = null;
+  private String getReply() {
+    
+	Scanner scanner = new Scanner(System.in);
+	
+	String reply = "";
+	boolean invalidReply = true;
+
+	do {
+
+		System.out.print("Enter your answer (Only 'T' and 'F' are allowed): ");
+		reply = scanner.nextLine();
+
+		if (reply.equalsIgnoreCase("t") || reply.equalsIgnoreCase("f")) {
+
+			invalidReply = false;
+			return reply;
+		} else {
+
+			System.out.println("INVALID REPLY!");
+			continue;
+		}
+	} while (invalidReply);
+	
+	return reply;
     // Write code here which reads a String from the console.
     // As long as it is not a valid reply (one of "T" and "F")
     // write an error message, and read a new reply.
     // When you have gotten a valid reply, return it.
-
-	
-    return reply;
   }
 
   private void doGuesses(){
