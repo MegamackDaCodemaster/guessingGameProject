@@ -38,6 +38,7 @@ public class Guesser{
 	rules();
     // call the doGuesses() method here
 	doGuesses();
+	getReply();
   }
 
   private void rules(){
