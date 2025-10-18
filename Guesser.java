@@ -121,6 +121,7 @@ public class Guesser{
                        guess +
                        " (took me " + numberOfGuesses +
                        " guesses)");
+	System.exit(0);
   }
 
 }//Trying to commit
