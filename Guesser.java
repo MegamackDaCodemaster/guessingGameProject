@@ -68,7 +68,7 @@ public class Guesser{
 
 	do {
 
-		System.out.print("Enter your answer (Only 'T' and 'F' are allowed): ");
+		System.out.print("Enter your answer: ");
 		reply = scanner.nextLine();
 
 		if (reply.equalsIgnoreCase("t") || reply.equalsIgnoreCase("f")) {
