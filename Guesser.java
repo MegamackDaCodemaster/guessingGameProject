@@ -68,7 +68,6 @@ public class Guesser{
 
 	do {
 
-		System.out.print("Enter your answer: ");
 		reply = scanner.nextLine();
 
 		if (reply.equalsIgnoreCase("t") || reply.equalsIgnoreCase("f")) {
@@ -77,7 +76,7 @@ public class Guesser{
 			return reply;
 		} else {
 
-			System.out.println("INVALID REPLY!");
+			System.out.println("Please reply T for True and F for False");
 			continue;
 		}
 	} while (invalidReply);
