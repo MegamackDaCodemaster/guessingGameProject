@@ -1,0 +1,25 @@
+Vad är pull repektive push?
+
+Svar: pull är ett kommando för att hämta ändringar från fjärrepot till ditt lokala repo.
+Push är ett annant kommando för att skicka ändringar från lokala repot till fjärrepot. 
+
+När använder man log respektive status?
+
+Svar: log används för att visa commit historiken, status används för att kontrollera om det 
+finns något att committa eller pusha i lokala branchen.
+
+Vad är en Git branch och varför är de viktiga?
+
+Svar: branch är ett separat utrymme för att kunna testa nya idéer. Man skapar flera branches eftersom man kan göra ändringar i filer,
+och testa de utan att det påverkar samma filer i Main-branchen. 
+
+Det finns flera sätt att rulla tillbaka koden till ett tidigare tillstånd. Förklara skillnaden och
+motivera när man skulle använda den ena eller andra metoden. Ge exempel på de
+kommandon du använder för att göra detta och vissa att det fungerar, vilken output du fick från git-kommandona?
+
+Svar: Git reset --Hard tar bort den senaste comitten och de senaste ändringarna i filen. På grund av att man inte kan ångra
+detta bör den användas med eftertanke, och bara om man absolut är säker på att man inte behöver behålla ändringarna. En annan 
+varriant är git revert som återställer en tidigare version av filen, men påverkar inte commit-historiken. Den är bättre
+att använda om man senare bestämmer sig för att ändå återgå till den revertade committen. 
+
+
