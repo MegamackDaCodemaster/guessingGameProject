@@ -1,0 +1,128 @@
+Fråga: Vad är pull repektive push?
+
+Svar: pull är ett kommando för att hämta ändringar från fjärrepot till ditt lokala repo.
+Push är ett annant kommando för att skicka ändringar från lokala repot till fjärrepot. 
+
+Fråga: När använder man log respektive status?
+
+Svar: log används för att visa commit historiken, status används för att kontrollera om det 
+finns något att committa eller pusha i lokala branchen, samt vilka filer som är spårade eller inte. Den visar även
+vilken branch man befinner sig i just nu.
+
+Fråga: Vad är en Git branch och varför är de viktiga?
+
+Svar: branch är ett separat utrymme för att kunna testa nya idéer. Man skapar flera branches eftersom man kan göra ändringar i filer,
+och testa de utan att det påverkar ursprungsfilerna i Main-branchen. Det bidrar även till att team-arbete blir smidigare, eftersom
+varje team får sina "egna kopior" av filerna, och kan pröva nya ändringar i dessa, utan att det påverkar resterande team.  
+
+Fråga: Det finns flera sätt att rulla tillbaka koden till ett tidigare tillstånd. Förklara skillnaden och
+motivera när man skulle använda den ena eller andra metoden. Ge exempel på de
+kommandon du använder för att göra detta och vissa att det fungerar, vilken output du fick från git-kommandona?
+
+Svar: Vi kan använda git revert för att gå tillbaka till en tidigare version av filen, men behålla dess historik:
+
+I exemplet nedan använder jag filen Players.java som jag skapade. Så här ser det ut just nu i filen (stjärnorna finns inte i koden, 
+bara för att göra denna textfil mer lättläst):
+ 
+*****
+import java.util.*;
+
+public class Players {
+
+        public static void main(String[] args) {
+
+                ArrayList<String> players = new ArrayList<>();
+
+                players.add("Bosse");
+                players.add("Mackan");
+        }
+}
+*****
+
+Så här ser det ut i loggen när jag kör 'git log --oneline':
+
+*****
+4b016c7 (HEAD -> main) Added main method and ArrayList with players to 'Players.java'
+05822b8 Added the class template to 'Players.java'
+8ab6ae8 Created the file 'Players.java'
+*****
+
+Kör jag git revert HEAD kommer den att ångra senaste committen och gå tillbaka till en tidigare version av filen,
+utan att historiken påverkas. Dvs de nyligen tillagda ändringarna i filen, i det här fallet main-metoden och listan
+med spelare, kommer tas bort utan att commithistoriken påverkas. Såhär ser det ut i "Players.java" och i historiken nu efter git revert:
+
+*****
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git revert HEAD
+[main 960b870] Revert "Added main method and ArrayList with players to 'Players.java'"
+ 1 file changed, 10 deletions(-)
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 6 commits.
+  (use "git push" to publish your local commits)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        "fr\303\245gor.txt"
+        run_game.sh
+
+nothing added to commit but untracked files present (use "git add" to track)
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ ls
+Guesser.class  Guesser.java  GuessingGame.class  GuessingGame.java  Players.java  frågor.txt  run_game.sh
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ cat Players.java
+public class Players {
+
+}
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git log --oneline
+960b870 (HEAD -> main) Revert "Added main method and ArrayList with players to 'Players.java'"
+4b016c7 Added main method and ArrayList with players to 'Players.java'
+05822b8 Added the class template to 'Players.java'
+8ab6ae8 Created the file 'Players.java'
+*****
+
+Nu finns bara klassmallen i filen och historiken visar fortfarande att jag gjorde en commit med ändringar innan "revert".
+Kommandot är lämpligt att använda om man av någon anledning ändå vill återgå till den committen senare, och på såvis
+få tillbaka den "versionen" av filen.
+
+En annat kommando för att ångra skriven kod är git reset --hard. Den ger dock större effekt jämfört med revert eftersom det raderar
+både senaste ändringar i filen, men tar även bort commiten från historiken. Allt nytt tas bort må andra ord:
+
+Före "reset --hard":
+
+*****
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git commit -am "Added array of players with type 'String'"
+[main 124b374] Added array of players with type 'String'
+ 1 file changed, 4 insertions(+)
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ cat Players.java
+public class Players {
+
+        public static void main(String[] args) {
+
+                String[] players = {"Bosse", "Mackan"};
+        }
+}
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git log --oneline
+124b374 (HEAD -> main) Added array of players with type 'String'
+960b870 Revert "Added main method and ArrayList with players to 'Players.java'"
+4b016c7 Added main method and ArrayList with players to 'Players.java'
+05822b8 Added the class template to 'Players.java'
+8ab6ae8 Created the file 'Players.java'
+*****
+
+Efter "reset --hard":
+
+*****
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git reset --hard HEAD~1
+HEAD is now at 960b870 Revert "Added main method and ArrayList with players to 'Players.java'"
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ cat Players.java
+public class Players {
+
+}
+mackan@LAPTOP-E1KAJU6E:~/guessingGame/guessingGameProject$ git log --oneline
+960b870 (HEAD -> main) Revert "Added main method and ArrayList with players to 'Players.java'"
+4b016c7 Added main method and ArrayList with players to 'Players.java'
+05822b8 Added the class template to 'Players.java'
+8ab6ae8 Created the file 'Players.java'
+*****
+
+Detta kommando ska man endast använda om man absolut är säker på att man inte vill ha kvar ändringar, varken i filen
+eller commithistoriken. Eftersom man inte kan ångra detta och gå tillbaka till den bortagna committen senare. 
