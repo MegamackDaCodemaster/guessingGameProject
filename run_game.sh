@@ -9,11 +9,10 @@ cd "$base_dir/$name"_labb
 echo "Running game from $(pwd)"
 echo "compiling..."
 javac GuessingGame.java Guesser.java
-cd ..
 echo "running..."
 java GuessingGame
 echo "Done!"
-cd "Marcus_Björkman_labb"
+cd "$base_dir/$name"_labb
 echo "Removing class files..."
 rm GuessingGame.class Guesser.class
 ls
